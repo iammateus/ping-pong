@@ -23,6 +23,16 @@ rect = {
     'ySize': 20,
 }
 
+direction = {
+    'x': 0,
+    'y': 1
+}
+
+speed = {
+    'x': 0,
+    'y': 1
+}
+
 def setWindowPositionCentered(width, height):
     monitors = get_monitors()
     primaryMonitor = monitors[0]
@@ -32,7 +42,6 @@ def setWindowPositionCentered(width, height):
     os.environ['SDL_VIDEO_CENTERED'] = '0'
 
 def getCirclePoints():
-    
     points = []
     
     for degree in range(360):
@@ -49,6 +58,12 @@ def getCirclePoints():
     
     return points
 
+def moveCircleY():
+    circle['y'] = circle['y'] + direction['y']
+
+def moveCircleX():
+    circle['x'] = circle['x'] + direction['x']
+
 def redrawWindow(window):
     window.fill(white)
 
@@ -56,8 +71,7 @@ def getCenterDiference():
     rectCenter = rect['x'] + rect['xSize'] / 2
     return rectCenter - circle['x']
 
-def getCollision():
-    
+def getCollisionPlatform():
     circlePoints = getCirclePoints()
     
     if circle['y'] + circle['radius'] < 480:
@@ -66,39 +80,102 @@ def getCollision():
     rectRight = rect['x'] + rect['xSize']
 
     for point in circlePoints:
-        if point['x'] >= rect['x'] and point['x'] <= rectRight and point['y'] > 480:
+        if point['x'] >= rect['x'] and point['x'] <= rectRight and point['y'] > 480 and point['y'] < 490:
             return True
 
     return False
 
-def main():
-    sizeY = 350
-    sizeX = 500
+def listenToEvents():
     
-    setWindowPositionCentered(sizeY, sizeX)
-    window = pygame.display.set_mode((sizeY, sizeX))
+    for event in pygame.event.get():
+        
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            exit()
+    
+    keys = pygame.key.get_pressed()
+
+    if(keys[pygame.K_LEFT]):
+        if rect['x'] > 0:
+            rect['x'] = rect['x'] - 1
+        
+    if(keys[pygame.K_RIGHT]):
+        if rect['x'] +  rect['xSize'] < 350:
+            rect['x'] = rect['x'] + 1
+
+def main():
+    sizeX = 350
+    sizeY = 500
+    
+    setWindowPositionCentered(sizeX, sizeY)
+    window = pygame.display.set_mode((sizeX, sizeY))
     pygame.display.set_caption("Ping Pong!")
 
     clock = pygame.time.Clock()
 
     state = True
-    while state:
 
-        clock.tick(50)
+    counter = 0
+    while state:
+        counter += 1
+        clock.tick(200)
 
         redrawWindow(window)
-        pygame.draw.circle(window, black, (circle['x'], circle['y']), circle['radius'], circle['radius'])
+
+        listenToEvents()
+
+        if speed['y'] != 0 and counter % speed['y'] == 0:
+            moveCircleY()
         
-        circle['y'] = circle['y'] + 1
+        if speed['x'] != 0 and counter % speed['x'] == 0:
+            moveCircleX()
 
+        pygame.draw.circle(window, black, (circle['x'], circle['y']), circle['radius'], circle['radius'])
         pygame.draw.rect(window, black, (rect['x'], rect['y'], rect['xSize'], rect['ySize']))
-
         pygame.display.update()
 
-        if getCollision():
-            print('Hit')
+        if getCollisionPlatform():
+
             print(getCenterDiference())
-            while True:
-                pass
+
+            direction['y'] = - 1
+
+            if getCenterDiference() < 0:
+                direction['x'] = 1
+                
+                if getCenterDiference() < -1 * (rect['xSize'] / 2 / 2 / 2):
+                    speed['x'] = 3
+
+                if getCenterDiference() < -1 * (rect['xSize'] / 2 / 2):
+                    speed['x'] = 2
+
+                if getCenterDiference() < -1 * (rect['xSize'] / 2):
+                    speed['x'] = 1
+                
+            if getCenterDiference() > 0:
+                direction['x'] = -1
+
+                if getCenterDiference() > (rect['xSize'] / 2 / 2 / 2):
+                    speed['x'] = 3
+
+                if getCenterDiference() > (rect['xSize'] / 2 / 2):
+                    speed['x'] = 2
+
+                if getCenterDiference() > (rect['xSize'] / 2):
+                    speed['x'] = 1
+            
+            if getCenterDiference() == 0:
+                direction['x'] = 0
+        
+        print(speed['x'])
+        
+        if circle['x'] - circle['radius'] == 0:
+            direction['x'] = 1
+
+        if circle['x'] + circle['radius'] == sizeX:
+            direction['x'] = -1
+
+        if circle['y'] - circle['radius'] == 0:
+            direction['y'] = 1
 
 main()
