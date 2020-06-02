@@ -5,7 +5,6 @@ from random import randrange
 from tkinter import messagebox
 from screeninfo import get_monitors
 import math
-from ExampleClass import ExampleClass
 
 white = (255, 255, 255)
 black = (0,0,0)
@@ -42,11 +41,9 @@ def setWindowPositionCentered(width, height):
     os.environ['SDL_VIDEO_WINDOW_POS'] = '%i,%i' % (positionX,positionY)
     os.environ['SDL_VIDEO_CENTERED'] = '0'
 
-def getCirclePoints():
+def getCircleCoordinatesPoints():
     points = []
-    
     for degree in range(360):
-        
         radians = degree * math.pi/180;
         
         positionX = circle['x'] + circle['radius'] * math.cos(radians);
@@ -56,7 +53,6 @@ def getCirclePoints():
             'x': positionX,
             'y': positionY
         })
-    
     return points
 
 def moveCircleY():
@@ -72,14 +68,9 @@ def getCenterDiference():
     rectCenter = rect['x'] + rect['xSize'] / 2
     return rectCenter - circle['x']
 
-def getCollisionPlatform():
-    circlePoints = getCirclePoints()
-    
-    if circle['y'] + circle['radius'] < 480:
-        return False
-
+def collidedIntoPlataform():
+    circlePoints = getCircleCoordinatesPoints()
     rectRight = rect['x'] + rect['xSize']
-
     for point in circlePoints:
         if point['x'] >= rect['x'] and point['x'] <= rectRight and point['y'] > 480 and point['y'] < 490:
             return True
@@ -114,18 +105,11 @@ def main():
 
     clock = pygame.time.Clock()
 
-    state = True
-
-    exampleObject = ExampleClass()
-    exampleObject.exemplaMethod()
-
     counter = 0
+    state = True
     while state:
         counter += 1
         clock.tick(200)
-
-        redrawWindow(window)
-
         listenToEvents()
 
         if speed['y'] != 0 and counter % speed['y'] == 0:
@@ -134,11 +118,12 @@ def main():
         if speed['x'] != 0 and counter % speed['x'] == 0:
             moveCircleX()
 
+        redrawWindow(window)
         pygame.draw.circle(window, black, (circle['x'], circle['y']), circle['radius'], circle['radius'])
         pygame.draw.rect(window, black, (rect['x'], rect['y'], rect['xSize'], rect['ySize']))
         pygame.display.update()
 
-        if getCollisionPlatform():
+        if collidedIntoPlataform():
 
             print(getCenterDiference())
 
