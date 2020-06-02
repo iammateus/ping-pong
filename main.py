@@ -93,6 +93,12 @@ def listenToEvents():
         if rect['x'] +  rect['width'] < 350:
             rect['x'] = rect['x'] + 1
 
+def updateWindow(window):
+    redrawWindow(window)
+    pygame.draw.circle(window, black, (circle['x'], circle['y']), circle['radius'], circle['radius'])
+    pygame.draw.rect(window, black, (rect['x'], rect['y'], rect['width'], rect['height']))
+    pygame.display.update()
+
 def main():
     width = 350
     height = 500
@@ -115,10 +121,7 @@ def main():
         if speed['x'] != 0 and counter % speed['x'] == 0:
             moveCircleX()
 
-        redrawWindow(window)
-        pygame.draw.circle(window, black, (circle['x'], circle['y']), circle['radius'], circle['radius'])
-        pygame.draw.rect(window, black, (rect['x'], rect['y'], rect['width'], rect['height']))
-        pygame.display.update()
+        updateWindow(window)
 
         if collidedIntoPlataform():
 
