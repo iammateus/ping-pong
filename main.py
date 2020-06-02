@@ -5,6 +5,7 @@ from random import randrange
 from tkinter import messagebox
 from screeninfo import get_monitors
 import math
+from ExampleClass import ExampleClass
 
 white = (255, 255, 255)
 black = (0,0,0)
@@ -114,6 +115,9 @@ def main():
     clock = pygame.time.Clock()
 
     state = True
+
+    exampleObject = ExampleClass()
+    exampleObject.exemplaMethod()
 
     counter = 0
     while state:
