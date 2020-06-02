@@ -78,9 +78,7 @@ def collidedIntoPlataform():
     return False
 
 def listenToEvents():
-    
     for event in pygame.event.get():
-        
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
@@ -96,20 +94,19 @@ def listenToEvents():
             rect['x'] = rect['x'] + 1
 
 def main():
-    sizeX = 350
-    sizeY = 500
+    width = 350
+    height = 500
     
-    setWindowPositionCentered(sizeX, sizeY)
-    window = pygame.display.set_mode((sizeX, sizeY))
+    setWindowPositionCentered(width, height)
+    window = pygame.display.set_mode((width, height))
     pygame.display.set_caption("Ping Pong!")
 
     clock = pygame.time.Clock()
-
     counter = 0
     state = True
     while state:
-        counter += 1
         clock.tick(200)
+        counter += 1
         listenToEvents()
 
         if speed['y'] != 0 and counter % speed['y'] == 0:
@@ -161,7 +158,7 @@ def main():
         if circle['x'] - circle['radius'] == 0:
             direction['x'] = 1
 
-        if circle['x'] + circle['radius'] == sizeX:
+        if circle['x'] + circle['radius'] == width:
             direction['x'] = -1
 
         if circle['y'] - circle['radius'] == 0:
