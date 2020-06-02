@@ -19,8 +19,8 @@ circle = {
 rect = {
     'x': 110,
     'y': 480,
-    'xSize': 60,
-    'ySize': 20,
+    'width': 60,
+    'height': 20,
 }
 
 direction = {
@@ -65,12 +65,12 @@ def redrawWindow(window):
     window.fill(white)
 
 def getCenterDiference():
-    rectCenter = rect['x'] + rect['xSize'] / 2
+    rectCenter = rect['x'] + rect['width'] / 2
     return rectCenter - circle['x']
 
 def collidedIntoPlataform():
     circlePoints = getCircleCoordinatesPoints()
-    rectRight = rect['x'] + rect['xSize']
+    rectRight = rect['x'] + rect['width']
     for point in circlePoints:
         if point['x'] >= rect['x'] and point['x'] <= rectRight and point['y'] > 480 and point['y'] < 490:
             return True
@@ -90,7 +90,7 @@ def listenToEvents():
             rect['x'] = rect['x'] - 1
         
     if(keys[pygame.K_RIGHT]):
-        if rect['x'] +  rect['xSize'] < 350:
+        if rect['x'] +  rect['width'] < 350:
             rect['x'] = rect['x'] + 1
 
 def main():
@@ -117,7 +117,7 @@ def main():
 
         redrawWindow(window)
         pygame.draw.circle(window, black, (circle['x'], circle['y']), circle['radius'], circle['radius'])
-        pygame.draw.rect(window, black, (rect['x'], rect['y'], rect['xSize'], rect['ySize']))
+        pygame.draw.rect(window, black, (rect['x'], rect['y'], rect['width'], rect['height']))
         pygame.display.update()
 
         if collidedIntoPlataform():
@@ -129,25 +129,25 @@ def main():
             if getCenterDiference() < 0:
                 direction['x'] = 1
                 
-                if getCenterDiference() < -1 * (rect['xSize'] / 2 / 2 / 2):
+                if getCenterDiference() < -1 * (rect['width'] / 2 / 2 / 2):
                     speed['x'] = 3
 
-                if getCenterDiference() < -1 * (rect['xSize'] / 2 / 2):
+                if getCenterDiference() < -1 * (rect['width'] / 2 / 2):
                     speed['x'] = 2
 
-                if getCenterDiference() < -1 * (rect['xSize'] / 2):
+                if getCenterDiference() < -1 * (rect['width'] / 2):
                     speed['x'] = 1
                 
             if getCenterDiference() > 0:
                 direction['x'] = -1
 
-                if getCenterDiference() > (rect['xSize'] / 2 / 2 / 2):
+                if getCenterDiference() > (rect['width'] / 2 / 2 / 2):
                     speed['x'] = 3
 
-                if getCenterDiference() > (rect['xSize'] / 2 / 2):
+                if getCenterDiference() > (rect['width'] / 2 / 2):
                     speed['x'] = 2
 
-                if getCenterDiference() > (rect['xSize'] / 2):
+                if getCenterDiference() > (rect['width'] / 2):
                     speed['x'] = 1
             
             if getCenterDiference() == 0:
