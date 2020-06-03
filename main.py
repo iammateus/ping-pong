@@ -64,7 +64,7 @@ def moveCircleX():
 def redrawWindow(window):
     window.fill(white)
 
-def getCenterDiference():
+def getCenterDistance():
     rectCenter = rect['x'] + rect['width'] / 2
     return rectCenter - circle['x']
 
@@ -125,38 +125,39 @@ def main():
 
         if collidedIntoPlataform():
 
-            print(getCenterDiference())
+            centerDistance = getCenterDistance()
 
             direction['y'] = - 1
 
-            if getCenterDiference() < 0:
+            if centerDistance < 0:
                 direction['x'] = 1
                 
-                if getCenterDiference() < -1 * (rect['width'] / 2 / 2 / 2):
+                if centerDistance < -1 * (rect['width'] / 2 / 2 / 2):
                     speed['x'] = 3
 
-                if getCenterDiference() < -1 * (rect['width'] / 2 / 2):
+                if centerDistance < -1 * (rect['width'] / 2 / 2):
                     speed['x'] = 2
 
-                if getCenterDiference() < -1 * (rect['width'] / 2):
+                if centerDistance < -1 * (rect['width'] / 2):
                     speed['x'] = 1
                 
-            if getCenterDiference() > 0:
+            if centerDistance > 0:
                 direction['x'] = -1
 
-                if getCenterDiference() > (rect['width'] / 2 / 2 / 2):
+                if centerDistance > (rect['width'] / 2 / 2 / 2):
                     speed['x'] = 3
 
-                if getCenterDiference() > (rect['width'] / 2 / 2):
+                if centerDistance > (rect['width'] / 2 / 2):
                     speed['x'] = 2
 
-                if getCenterDiference() > (rect['width'] / 2):
+                if centerDistance > (rect['width'] / 2):
                     speed['x'] = 1
             
-            if getCenterDiference() == 0:
+            if centerDistance == 0:
                 direction['x'] = 0
         
-        print(speed['x'])
+        print('direction x: ' + str(direction['x']))
+        print('speed x: ' + str(speed['x']))
         
         if circle['x'] - circle['radius'] == 0:
             direction['x'] = 1
