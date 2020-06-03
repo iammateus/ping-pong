@@ -16,7 +16,14 @@ circle = {
     'y': 20
 }
 
-rect = {
+topRect = {
+    'x': 110,
+    'y': 0,
+    'width': 60,
+    'height': 20,
+}
+
+bottomRect = {
     'x': 110,
     'y': 480,
     'width': 60,
@@ -65,14 +72,14 @@ def redrawWindow(window):
     window.fill(white)
 
 def getCenterDistance():
-    rectCenter = rect['x'] + rect['width'] / 2
+    rectCenter = bottomRect['x'] + bottomRect['width'] / 2
     return rectCenter - circle['x']
 
 def collidedIntoPlataform():
     circlePoints = getCircleCoordinatesPoints()
-    rectRight = rect['x'] + rect['width']
+    rectRight = bottomRect['x'] + bottomRect['width']
     for point in circlePoints:
-        if point['x'] >= rect['x'] and point['x'] <= rectRight and point['y'] > 480 and point['y'] < 490:
+        if point['x'] >= bottomRect['x'] and point['x'] <= rectRight and point['y'] > 480 and point['y'] < 490:
             return True
 
     return False
@@ -86,17 +93,26 @@ def listenToEvents():
     keys = pygame.key.get_pressed()
 
     if(keys[pygame.K_LEFT]):
-        if rect['x'] > 0:
-            rect['x'] = rect['x'] - 1
+        if bottomRect['x'] > 0:
+            bottomRect['x'] = bottomRect['x'] - 1
         
     if(keys[pygame.K_RIGHT]):
-        if rect['x'] +  rect['width'] < 350:
-            rect['x'] = rect['x'] + 1
+        if bottomRect['x'] +  bottomRect['width'] < 350:
+            bottomRect['x'] = bottomRect['x'] + 1
+    
+    if(keys[pygame.K_a]):
+        if topRect['x'] > 0:
+            topRect['x'] = topRect['x'] - 1
+        
+    if(keys[pygame.K_d]):
+        if topRect['x'] +  topRect['width'] < 350:
+            topRect['x'] = topRect['x'] + 1
 
 def updateWindow(window):
     redrawWindow(window)
     pygame.draw.circle(window, black, (circle['x'], circle['y']), circle['radius'], circle['radius'])
-    pygame.draw.rect(window, black, (rect['x'], rect['y'], rect['width'], rect['height']))
+    pygame.draw.rect(window, black, (bottomRect['x'], bottomRect['y'], bottomRect['width'], bottomRect['height']))
+    pygame.draw.rect(window, black, (topRect['x'], topRect['y'], topRect['width'], topRect['height']))
     pygame.display.update()
 
 def getYDirection():
@@ -142,13 +158,13 @@ def main():
                 centerDistance *= -1
 
             if centerDistance > 0:
-                if centerDistance > (rect['width'] / 2 / 2 / 2):
+                if centerDistance > (bottomRect['width'] / 2 / 2 / 2):
                     speed['x'] = 3
 
-                if centerDistance > (rect['width'] / 2 / 2):
+                if centerDistance > (bottomRect['width'] / 2 / 2):
                     speed['x'] = 2
 
-                if centerDistance > (rect['width'] / 2):
+                if centerDistance > (bottomRect['width'] / 2):
                     speed['x'] = 1
             
             if centerDistance == 0:
@@ -159,9 +175,6 @@ def main():
 
         if circle['x'] + circle['radius'] == width:
             direction['x'] = -1
-
-        if circle['y'] - circle['radius'] == 0:
-            direction['y'] = 1
 
         print('direction x: ' + str(direction['x']))
         print('speed x: ' + str(speed['x']))
