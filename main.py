@@ -102,6 +102,12 @@ def updateWindow(window):
 def getYDirection():
     return -1
 
+def getXDirection():
+    centerDistance = getCenterDistance()
+    if centerDistance < 0:
+        return 1
+    return -1
+
 def main():
     width = 350
     height = 500
@@ -130,22 +136,12 @@ def main():
             centerDistance = getCenterDistance()
 
             direction['y'] = getYDirection()
+            direction['x'] = getXDirection()
 
             if centerDistance < 0:
-                direction['x'] = 1
-                
-                if centerDistance < -1 * (rect['width'] / 2 / 2 / 2):
-                    speed['x'] = 3
+                centerDistance *= -1
 
-                if centerDistance < -1 * (rect['width'] / 2 / 2):
-                    speed['x'] = 2
-
-                if centerDistance < -1 * (rect['width'] / 2):
-                    speed['x'] = 1
-                
             if centerDistance > 0:
-                direction['x'] = -1
-
                 if centerDistance > (rect['width'] / 2 / 2 / 2):
                     speed['x'] = 3
 
