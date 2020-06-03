@@ -1,13 +1,13 @@
 import os
+import math
 import pygame
 import tkinter as tk
 from random import randrange
 from tkinter import messagebox
 from screeninfo import get_monitors
-import math
 
-white = (255, 255, 255)
 black = (0,0,0)
+white = (255, 255, 255)
 
 circle = {
     'size': 30,
@@ -124,7 +124,6 @@ def main():
         updateWindow(window)
 
         if collidedIntoPlataform():
-
             centerDistance = getCenterDistance()
 
             direction['y'] = - 1
@@ -156,9 +155,6 @@ def main():
             if centerDistance == 0:
                 direction['x'] = 0
         
-        print('direction x: ' + str(direction['x']))
-        print('speed x: ' + str(speed['x']))
-        
         if circle['x'] - circle['radius'] == 0:
             direction['x'] = 1
 
@@ -168,4 +164,7 @@ def main():
         if circle['y'] - circle['radius'] == 0:
             direction['y'] = 1
 
+        print('direction x: ' + str(direction['x']))
+        print('speed x: ' + str(speed['x']))
+        
 main()
