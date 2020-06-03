@@ -99,6 +99,9 @@ def updateWindow(window):
     pygame.draw.rect(window, black, (rect['x'], rect['y'], rect['width'], rect['height']))
     pygame.display.update()
 
+def getYDirection():
+    return -1
+
 def main():
     width = 350
     height = 500
@@ -126,7 +129,7 @@ def main():
         if collidedIntoPlataform():
             centerDistance = getCenterDistance()
 
-            direction['y'] = - 1
+            direction['y'] = getYDirection()
 
             if centerDistance < 0:
                 direction['x'] = 1
@@ -166,5 +169,5 @@ def main():
 
         print('direction x: ' + str(direction['x']))
         print('speed x: ' + str(speed['x']))
-        
+
 main()
