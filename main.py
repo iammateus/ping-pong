@@ -13,7 +13,7 @@ circle = {
     'size': 30,
     'radius': 15,
     'x': 175,
-    'y': 20
+    'y': 60
 }
 
 topRect = {
@@ -71,15 +71,28 @@ def moveCircleX():
 def redrawWindow(window):
     window.fill(white)
 
-def getCenterDistance():
+def getCenterBottomPlatformDistance():
     rectCenter = bottomRect['x'] + bottomRect['width'] / 2
     return rectCenter - circle['x']
 
-def collidedIntoPlataform():
+def getCenterTopPlatformDistance():
+    rectCenter = topRect['x'] + topRect['width'] / 2
+    return rectCenter - circle['x']
+
+def getCollidedIntoBottomPlataform():
     circlePoints = getCircleCoordinatesPoints()
     rectRight = bottomRect['x'] + bottomRect['width']
     for point in circlePoints:
         if point['x'] >= bottomRect['x'] and point['x'] <= rectRight and point['y'] > 480 and point['y'] < 490:
+            return True
+
+    return False
+
+def getCollidedIntoTopPlataform():
+    circlePoints = getCircleCoordinatesPoints()
+    rectRight = topRect['x'] + topRect['width']
+    for point in circlePoints:
+        if point['x'] >= topRect['x'] and point['x'] <= rectRight and point['y'] <= 20 and point['y'] >= 10:
             return True
 
     return False
@@ -116,10 +129,20 @@ def updateWindow(window):
     pygame.display.update()
 
 def getYDirection():
-    return -1
+    if circle['y'] > 250:
+        return -1
+    return 1
 
-def getXDirection():
-    centerDistance = getCenterDistance()
+def getXDirection(platform):
+    if platform == "top":
+        centerDistance = getCenterTopPlatformDistance()
+    
+    if platform == "bottom":
+        centerDistance = getCenterBottomPlatformDistance()
+
+    print(platform)
+    print(centerDistance)
+
     if centerDistance < 0:
         return 1
     return -1
@@ -148,11 +171,19 @@ def main():
 
         updateWindow(window)
 
-        if collidedIntoPlataform():
-            centerDistance = getCenterDistance()
+        collidedIntoBottomPlataform = getCollidedIntoBottomPlataform()
+        collidedIntoTopPlataform = getCollidedIntoTopPlataform()
+        if collidedIntoBottomPlataform or collidedIntoTopPlataform:
+            if(collidedIntoBottomPlataform):
+                centerDistance = getCenterBottomPlatformDistance()
+                platform = "bottom"
+            
+            if(collidedIntoTopPlataform):
+                centerDistance = getCenterTopPlatformDistance()
+                platform = "top"
 
             direction['y'] = getYDirection()
-            direction['x'] = getXDirection()
+            direction['x'] = getXDirection(platform)
 
             if centerDistance < 0:
                 centerDistance *= -1
@@ -176,7 +207,7 @@ def main():
         if circle['x'] + circle['radius'] == width:
             direction['x'] = -1
 
-        print('direction x: ' + str(direction['x']))
-        print('speed x: ' + str(speed['x']))
+        # print('direction x: ' + str(direction['x']))
+        # print('speed x: ' + str(speed['x']))
 
 main()
