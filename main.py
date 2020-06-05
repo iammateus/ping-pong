@@ -17,14 +17,14 @@ circle = {
 }
 
 topRect = {
-    'x': 110,
+    'x': (350 - 60) // 2,
     'y': 0,
     'width': 60,
     'height': 20,
 }
 
 bottomRect = {
-    'x': 110,
+    'x': (350 - 60) // 2,
     'y': 480,
     'width': 60,
     'height': 20,
