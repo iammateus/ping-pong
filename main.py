@@ -131,7 +131,14 @@ def updateWindow(window):
     pygame.draw.circle(window, black, (circle['x'], circle['y']), circle['radius'], circle['radius'])
     pygame.draw.rect(window, black, (bottomRect['x'], bottomRect['y'], bottomRect['width'], bottomRect['height']))
     pygame.draw.rect(window, black, (topRect['x'], topRect['y'], topRect['width'], topRect['height']))
+    drawScore(window)
     pygame.display.update()
+
+def drawScore(window):
+    scoreFont = pygame.font.SysFont("monospace", 16, 400)
+    scoreText = "Top: " +  str(score["top"]) + " x Bottom: " + str(score["bottom"])
+    scoreLabel =   scoreFont.render(scoreText, 1, (0,0,0))
+    window.blit(scoreLabel, (10, 40))
 
 def getYDirection():
     if circle['y'] > 250:
@@ -165,6 +172,7 @@ def main():
     setWindowPositionCentered(width, height)
     window = pygame.display.set_mode((width, height))
     pygame.display.set_caption("Ping Pong!")
+    pygame.font.init()
 
     clock = pygame.time.Clock()
     counter = 0
@@ -224,6 +232,8 @@ def main():
             circle['x'] = 175
             direction['x'] = 0
             direction['y'] = -1
+            updateWindow(window)
+            pygame.time.wait(500)
 
         if getBottomScored():
             score['bottom'] += 1
@@ -231,6 +241,8 @@ def main():
             circle['x'] = 175
             direction['x'] = 0
             direction['y'] = 1
+            updateWindow(window)
+            pygame.time.wait(500)
 
         print(str(score))
 
