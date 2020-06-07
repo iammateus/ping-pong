@@ -152,9 +152,6 @@ def getXDirection(platform):
     if platform == "bottom":
         centerDistance = getCenterBottomPlatformDistance()
 
-    print(platform)
-    print(centerDistance)
-
     if centerDistance < 0:
         return 1
     return -1
@@ -207,6 +204,8 @@ def main():
             if centerDistance < 0:
                 centerDistance *= -1
 
+            speed['x'] = 0
+
             if centerDistance > 0:
                 if centerDistance > (bottomRect['width'] / 2 / 2 / 2):
                     speed['x'] = 3
@@ -243,8 +242,6 @@ def main():
             direction['y'] = 1
             updateWindow(window)
             pygame.time.wait(500)
-
-        print(str(score))
 
         # print('direction x: ' + str(direction['x']))
         # print('speed x: ' + str(speed['x']))
