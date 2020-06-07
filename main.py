@@ -9,6 +9,11 @@ from screeninfo import get_monitors
 black = (0,0,0)
 white = (255, 255, 255)
 
+score = {
+    'top': 0,
+    'bottom': 0 
+}
+
 circle = {
     'size': 30,
     'radius': 15,
@@ -147,6 +152,12 @@ def getXDirection(platform):
         return 1
     return -1
 
+def getTopScored():
+    return circle['y'] - circle['radius'] == 500
+
+def getBottomScored():
+    return circle['y'] + circle['radius'] == 0
+
 def main():
     width = 350
     height = 500
@@ -206,6 +217,22 @@ def main():
 
         if circle['x'] + circle['radius'] == width:
             direction['x'] = -1
+
+        if getTopScored():
+            score['top'] += 1
+            circle['y'] = 500 - 60
+            circle['x'] = 175
+            direction['x'] = 0
+            direction['y'] = -1
+
+        if getBottomScored():
+            score['bottom'] += 1
+            circle['y'] = 60
+            circle['x'] = 175
+            direction['x'] = 0
+            direction['y'] = 1
+
+        print(str(score))
 
         # print('direction x: ' + str(direction['x']))
         # print('speed x: ' + str(speed['x']))
