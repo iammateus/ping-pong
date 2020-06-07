@@ -159,7 +159,7 @@ def main():
     counter = 0
     state = True
     while state:
-        clock.tick(200)
+        clock.tick(300)
         counter += 1
         listenToEvents()
 
