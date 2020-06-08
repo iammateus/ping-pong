@@ -1,11 +1,9 @@
-import math
 import pygame
 import tkinter as tk
+from ball import Ball
 from random import randrange
 from tkinter import messagebox
 from Utils.windowconfig import setWindowPositionCentered
-
-from ball import Ball
 
 black = (0,0,0)
 white = (255, 255, 255)
