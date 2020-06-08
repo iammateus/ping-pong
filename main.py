@@ -1,10 +1,10 @@
-import os
 import math
 import pygame
 import tkinter as tk
 from random import randrange
 from tkinter import messagebox
-from screeninfo import get_monitors
+from Utils.windowconfig import setWindowPositionCentered
+
 from ball import Ball
 
 black = (0,0,0)
@@ -19,23 +19,15 @@ topRect = {
     'x': (350 - 60) // 2,
     'y': 0,
     'width': 60,
-    'height': 20,
+    'height': 20
 }
 
 bottomRect = {
     'x': (350 - 60) // 2,
     'y': 480,
     'width': 60,
-    'height': 20,
+    'height': 20
 }
-
-def setWindowPositionCentered(width, height):
-    monitors = get_monitors()
-    primaryMonitor = monitors[0]
-    positionX = primaryMonitor.width / 2 - width / 2
-    positionY = primaryMonitor.height / 2 - height / 2
-    os.environ['SDL_VIDEO_WINDOW_POS'] = '%i,%i' % (positionX,positionY)
-    os.environ['SDL_VIDEO_CENTERED'] = '0'
 
 def redrawWindow(window):
     window.fill(white)
