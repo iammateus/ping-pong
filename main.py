@@ -132,10 +132,9 @@ class Main:
         state = True
         while state:
             clock.tick(300)
+            
             self.listenToEvents()
-
             self.ball.move()
-
             self.updateWindow()
 
             collidedIntoBottomPlataform = self.getCollidedIntoBottomPlataform()
