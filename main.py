@@ -6,6 +6,9 @@ from tkinter import messagebox
 from Utils.windowconfig import setWindowPositionCentered
 
 class Main:
+    width = 350
+    height = 500
+
     black = (0,0,0)
     white = (255, 255, 255)
     
@@ -28,19 +31,26 @@ class Main:
         'height': 20
     }
 
-    def redrawWindow(self, window):
-        window.fill(self.white)
+    def __init__(self):
+        setWindowPositionCentered(self.width, self.height)
+        self.window = pygame.display.set_mode((self.width, self.height))
+        pygame.display.set_caption("Ping Pong!")
+        pygame.font.init()
+        self.ball = Ball(self.window)
 
-    def getCenterBottomPlatformDistance(self, ball):
+    def redrawWindow(self):
+        self.window.fill(self.white)
+
+    def getCenterBottomPlatformDistance(self):
         rectCenter = self.bottomRect['x'] + self.bottomRect['width'] / 2
-        return rectCenter - ball.x
+        return rectCenter - self.ball.x
 
-    def getCenterTopPlatformDistance(self, ball):
+    def getCenterTopPlatformDistance(self):
         rectCenter = self.topRect['x'] + self.topRect['width'] / 2
-        return rectCenter - ball.x
+        return rectCenter - self.ball.x
 
-    def getCollidedIntoBottomPlataform(self, ball):
-        circlePoints = ball.getCoordinatesPoints()
+    def getCollidedIntoBottomPlataform(self):
+        circlePoints = self.ball.getCoordinatesPoints()
         rectRight = self.bottomRect['x'] + self.bottomRect['width']
         for point in circlePoints:
             if point['x'] >= self.bottomRect['x'] and point['x'] <= rectRight and point['y'] > 480 and point['y'] < 490:
@@ -48,8 +58,8 @@ class Main:
 
         return False
 
-    def getCollidedIntoTopPlataform(self, ball):
-        circlePoints = ball.getCoordinatesPoints()
+    def getCollidedIntoTopPlataform(self):
+        circlePoints = self.ball.getCoordinatesPoints()
         rectRight = self.topRect['x'] + self.topRect['width']
         for point in circlePoints:
             if point['x'] >= self.topRect['x'] and point['x'] <= rectRight and point['y'] <= 20 and point['y'] >= 10:
@@ -81,116 +91,107 @@ class Main:
             if self.topRect['x'] +  self.topRect['width'] < 350:
                 self.topRect['x'] = self.topRect['x'] + 1
 
-    def updateWindow(self, ball, window):
-        self.redrawWindow(window)
-        ball.redraw()
-        pygame.draw.rect(window, self.black, (self.bottomRect['x'], self.bottomRect['y'], self.bottomRect['width'], self.bottomRect['height']))
-        pygame.draw.rect(window, self.black, (self.topRect['x'], self.topRect['y'], self.topRect['width'], self.topRect['height']))
-        self.drawScore(window)
+    def updateWindow(self):
+        self.redrawWindow()
+        self.ball.redraw()
+        pygame.draw.rect(self.window, self.black, (self.bottomRect['x'], self.bottomRect['y'], self.bottomRect['width'], self.bottomRect['height']))
+        pygame.draw.rect(self.window, self.black, (self.topRect['x'], self.topRect['y'], self.topRect['width'], self.topRect['height']))
+        self.drawScore()
         pygame.display.update()
 
-    def drawScore(self, window):
+    def drawScore(self):
         scoreFont = pygame.font.SysFont("monospace", 16, 400)
         scoreText = "Top: " +  str(self.score["top"]) + " x Bottom: " + str(self.score["bottom"])
         scoreLabel =   scoreFont.render(scoreText, 1, self.black)
-        window.blit(scoreLabel, (10, 40))
+        self.window.blit(scoreLabel, (10, 40))
 
-    def getYDirection(self, ball):
-        if ball.y > 250:
+    def getYDirection(self):
+        if self.ball.y > 250:
             return -1
         return 1
 
-    def getXDirection(self, platform, ball):
+    def getXDirection(self, platform):
         if platform == "top":
-            centerDistance = self.getCenterTopPlatformDistance(ball)
+            centerDistance = self.getCenterTopPlatformDistance()
         
         if platform == "bottom":
-            centerDistance = self.getCenterBottomPlatformDistance(ball)
+            centerDistance = self.getCenterBottomPlatformDistance()
 
         if centerDistance < 0:
             return 1
         return -1
 
-    def getTopScored(self, ball):
-        return ball.y - ball.radius == 500
+    def getTopScored(self):
+        return self.ball.y - self.ball.radius == 500
 
-    def getBottomScored(self, ball):
-        return ball.y +  ball.radius == 0
+    def getBottomScored(self):
+        return self.ball.y +  self.ball.radius == 0
 
     def run(self):
-        width = 350
-        height = 500
-        
-        setWindowPositionCentered(width, height)
-        window = pygame.display.set_mode((width, height))
-        pygame.display.set_caption("Ping Pong!")
-        pygame.font.init()
-
         clock = pygame.time.Clock()
-        ball = Ball(window)
         state = True
         while state:
             clock.tick(300)
             self.listenToEvents()
 
-            ball.move()
+            self.ball.move()
 
-            self.updateWindow(ball, window)
+            self.updateWindow()
 
-            collidedIntoBottomPlataform = self.getCollidedIntoBottomPlataform(ball)
-            collidedIntoTopPlataform = self.getCollidedIntoTopPlataform(ball)
+            collidedIntoBottomPlataform = self.getCollidedIntoBottomPlataform()
+            collidedIntoTopPlataform = self.getCollidedIntoTopPlataform()
             if collidedIntoBottomPlataform or collidedIntoTopPlataform:
                 if(collidedIntoBottomPlataform):
-                    centerDistance = self.getCenterBottomPlatformDistance(ball)
+                    centerDistance = self.getCenterBottomPlatformDistance()
                     platform = "bottom"
                 
                 if(collidedIntoTopPlataform):
-                    centerDistance = self.getCenterTopPlatformDistance(ball)
+                    centerDistance = self.getCenterTopPlatformDistance()
                     platform = "top"
 
-                ball.directionY = self.getYDirection(ball)
-                ball.directionX = self.getXDirection(platform, ball)
+                self.ball.directionY = self.getYDirection()
+                self.ball.directionX = self.getXDirection(platform)
 
                 if centerDistance < 0:
                     centerDistance *= -1
 
-                ball.speedX = 0
+                self.ball.speedX = 0
 
                 if centerDistance > 0:
                     if centerDistance > (self.bottomRect['width'] / 2 / 2 / 2):
-                        ball.speedX = 3
+                        self.ball.speedX = 3
 
                     if centerDistance > (self.bottomRect['width'] / 2 / 2):
-                        ball.speedX = 2
+                        self.ball.speedX = 2
 
                     if centerDistance > (self.bottomRect['width'] / 2):
-                        ball.speedX = 1
+                        self.ball.speedX = 1
                 
                 if centerDistance == 0:
-                    ball.directionX = 0
+                    self.ball.directionX = 0
             
-            if ball.x - ball.radius == 0:
-                ball.directionX = 1
+            if self.ball.x - self.ball.radius == 0:
+                self.ball.directionX = 1
 
-            if ball.x + ball.radius == width:
-                ball.directionX = -1
+            if self.ball.x + self.ball.radius == self.width:
+                self.ball.directionX = -1
 
-            if self.getTopScored(ball):
+            if self.getTopScored():
                 self.score['top'] += 1
-                ball.y = 500 - 60
-                ball.x = 175
-                ball.directionX = 0
-                ball.directionY = -1
-                self.updateWindow(ball, window)
+                self.ball.y = 500 - 60
+                self.ball.x = 175
+                self.ball.directionX = 0
+                self.ball.directionY = -1
+                self.updateWindow()
                 pygame.time.wait(500)
 
-            if self.getBottomScored(ball):
+            if self.getBottomScored():
                 self.score['bottom'] += 1
-                ball.y = 60
-                ball.x = 175
-                ball.directionX = 0
-                ball.directionY = 1
-                self.updateWindow(ball, window)
+                self.ball.y = 60
+                self.ball.x = 175
+                self.ball.directionX = 0
+                self.ball.directionY = 1
+                self.updateWindow()
                 pygame.time.wait(500)
 
             # print('direction x: ' + str(direction['x']))
