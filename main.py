@@ -38,7 +38,7 @@ class Main:
         pygame.font.init()
         self.ball = Ball(self.window)
 
-    def quit():
+    def quit(self):
         pygame.quit()
         exit()
 
@@ -97,6 +97,9 @@ class Main:
         if(keys[pygame.K_d]):
             if self.topRect['x'] +  self.topRect['width'] < 350:
                 self.topRect['x'] = self.topRect['x'] + 1
+        
+        if(keys[pygame.K_ESCAPE]):
+            self.quit()
 
     def updateWindow(self):
         self.redrawWindow()
