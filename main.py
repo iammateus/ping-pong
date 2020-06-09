@@ -67,7 +67,7 @@ class Main:
 
         return False
 
-    def listenToEvents(self):
+    def handleEvents(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -133,7 +133,7 @@ class Main:
         while state:
             clock.tick(300)
             
-            self.listenToEvents()
+            self.handleEvents()
             self.ball.move()
             self.updateWindow()
 
