@@ -38,6 +38,10 @@ class Main:
         pygame.font.init()
         self.ball = Ball(self.window)
 
+    def quit():
+        pygame.quit()
+        exit()
+
     def redrawWindow(self):
         self.window.fill(self.white)
 
@@ -70,8 +74,7 @@ class Main:
     def handleEvents(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
+                self.quit()
         
         keys = pygame.key.get_pressed()
 
@@ -87,6 +90,10 @@ class Main:
             if self.topRect['x'] > 0:
                 self.topRect['x'] = self.topRect['x'] - 1
             
+        if(keys[pygame.K_d]):
+            if self.topRect['x'] +  self.topRect['width'] < 350:
+                self.topRect['x'] = self.topRect['x'] + 1
+        
         if(keys[pygame.K_d]):
             if self.topRect['x'] +  self.topRect['width'] < 350:
                 self.topRect['x'] = self.topRect['x'] + 1
