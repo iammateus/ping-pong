@@ -37,28 +37,24 @@ class Main:
     def redrawWindow(self):
         self.window.fill(self.white)
 
-    def getCenterBottomPlatformDistance(self):
-        rectCenter = self.bottomPlatform.x + self.bottomPlatform.width / 2
-        return rectCenter - self.ball.x
-
-    def getCenterTopPlatformDistance(self):
-        rectCenter = self.topPlatform.x + self.topPlatform.width / 2
-        return rectCenter - self.ball.x
+    def getPlatformCenterDistanceToBall(self, platform):
+        platformCenter = platform.x + platform.width / 2
+        return platformCenter - self.ball.x
 
     def getCollidedIntoBottomPlataform(self):
         circlePoints = self.ball.getCoordinatesPoints()
-        rectRight = self.bottomPlatform.x + self.bottomPlatform.width
+        platformRight = self.bottomPlatform.x + self.bottomPlatform.width
         for point in circlePoints:
-            if point['x'] >= self.bottomPlatform.x and point['x'] <= rectRight and point['y'] > 480 and point['y'] < 490:
+            if point['x'] >= self.bottomPlatform.x and point['x'] <= platformRight and point['y'] > 480 and point['y'] < 490:
                 return True
 
         return False
 
     def getCollidedIntoTopPlataform(self):
         circlePoints = self.ball.getCoordinatesPoints()
-        rectRight = self.topPlatform.x + self.topPlatform.width
+        platformRight = self.topPlatform.x + self.topPlatform.width
         for point in circlePoints:
-            if point['x'] >= self.topPlatform.x and point['x'] <= rectRight and point['y'] <= 20 and point['y'] >= 10:
+            if point['x'] >= self.topPlatform.x and point['x'] <= platformRight and point['y'] <= 20 and point['y'] >= 10:
                 return True
 
         return False
@@ -109,11 +105,7 @@ class Main:
         return 1
 
     def getXDirection(self, platform):
-        if platform == "top":
-            centerDistance = self.getCenterTopPlatformDistance()
-        
-        if platform == "bottom":
-            centerDistance = self.getCenterBottomPlatformDistance()
+        centerDistance = self.getPlatformCenterDistanceToBall(platform)
 
         if centerDistance < 0:
             return 1
@@ -139,12 +131,12 @@ class Main:
             collidedIntoTopPlataform = self.getCollidedIntoTopPlataform()
             if collidedIntoBottomPlataform or collidedIntoTopPlataform:
                 if collidedIntoBottomPlataform:
-                    centerDistance = self.getCenterBottomPlatformDistance()
-                    platform = "bottom"
+                    centerDistance = self.getPlatformCenterDistanceToBall(self.bottomPlatform)
+                    platform = self.bottomPlatform
                 
                 if collidedIntoTopPlataform:
-                    centerDistance = self.getCenterTopPlatformDistance()
-                    platform = "top"
+                    centerDistance = self.getPlatformCenterDistanceToBall(self.topPlatform)
+                    platform = self.topPlatform
 
                 self.ball.directionY = self.getYDirection()
                 self.ball.directionX = self.getXDirection(platform)
