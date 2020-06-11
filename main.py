@@ -129,7 +129,7 @@ class Main:
         clock = pygame.time.Clock()
         state = True
         while state:
-            clock.tick(300)
+            clock.tick(500)
             
             self.handleEvents()
             self.ball.move()
