@@ -12,3 +12,9 @@ class Platform:
 
     def redraw(self):
         pygame.draw.rect(self.window, self.color, (self.x, self.y, self.width, self.height))
+    
+    def goLeft(self):
+        self.x -= 1
+
+    def goRight(self):
+        self.x += 1

@@ -72,19 +72,19 @@ class Main:
 
         if(keys[pygame.K_LEFT]):
             if self.bottomPlatform.x > 0:
-                self.bottomPlatform.x = self.bottomPlatform.x - 1
+                self.bottomPlatform.goLeft()
             
         if(keys[pygame.K_RIGHT]):
-            if self.bottomPlatform.x +  self.bottomPlatform.width < 350:
-                self.bottomPlatform.x = self.bottomPlatform.x + 1
+            if (self.bottomPlatform.x +  self.bottomPlatform.width) < self.width:
+                self.bottomPlatform.goRight()
         
         if(keys[pygame.K_a]):
             if self.topPlatform.x > 0:
-                self.topPlatform.x = self.topPlatform.x - 1
+                self.topPlatform.goLeft()
             
         if(keys[pygame.K_d]):
-            if self.topPlatform.x +  self.topPlatform.width < 350:
-                self.topPlatform.x = self.topPlatform.x + 1
+            if (self.topPlatform.x +  self.topPlatform.width) < self.width:
+                self.topPlatform.goRight()
         
         if(keys[pygame.K_ESCAPE]):
             self.quit()
