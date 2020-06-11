@@ -70,23 +70,23 @@ class Main:
         
         keys = pygame.key.get_pressed()
 
-        if(keys[pygame.K_LEFT]):
+        if keys[pygame.K_LEFT]:
             if self.bottomPlatform.x > 0:
                 self.bottomPlatform.goLeft()
             
-        if(keys[pygame.K_RIGHT]):
+        if keys[pygame.K_RIGHT]:
             if (self.bottomPlatform.x +  self.bottomPlatform.width) < self.width:
                 self.bottomPlatform.goRight()
         
-        if(keys[pygame.K_a]):
+        if keys[pygame.K_a]:
             if self.topPlatform.x > 0:
                 self.topPlatform.goLeft()
             
-        if(keys[pygame.K_d]):
+        if keys[pygame.K_d]:
             if (self.topPlatform.x +  self.topPlatform.width) < self.width:
                 self.topPlatform.goRight()
         
-        if(keys[pygame.K_ESCAPE]):
+        if keys[pygame.K_ESCAPE]:
             self.quit()
 
     def updateWindow(self):
@@ -138,11 +138,11 @@ class Main:
             collidedIntoBottomPlataform = self.getCollidedIntoBottomPlataform()
             collidedIntoTopPlataform = self.getCollidedIntoTopPlataform()
             if collidedIntoBottomPlataform or collidedIntoTopPlataform:
-                if(collidedIntoBottomPlataform):
+                if collidedIntoBottomPlataform:
                     centerDistance = self.getCenterBottomPlatformDistance()
                     platform = "bottom"
                 
-                if(collidedIntoTopPlataform):
+                if collidedIntoTopPlataform:
                     centerDistance = self.getCenterTopPlatformDistance()
                     platform = "top"
 
