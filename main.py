@@ -1,6 +1,7 @@
 import pygame
 import tkinter as tk
 from ball import Ball
+from platform import Platform
 from random import randrange
 from tkinter import messagebox
 from Utils.windowconfig import setWindowPositionCentered
@@ -17,26 +18,17 @@ class Main:
         'bottom': 0
     }
 
-    topRect = {
-        'x': (350 - 60) // 2,
-        'y': 0,
-        'width': 60,
-        'height': 20
-    }
-
-    bottomRect = {
-        'x': (350 - 60) // 2,
-        'y': 480,
-        'width': 60,
-        'height': 20
-    }
-
     def __init__(self):
         setWindowPositionCentered(self.width, self.height)
         self.window = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption("Ping Pong!")
         pygame.font.init()
+        
+        # Instantiates components
         self.ball = Ball(self.window)
+        platformsX = (350 - 60) // 2
+        self.topPlatform = Platform(self.window, platformsX, 0)
+        self.bottomPlatform = Platform(self.window, platformsX, 480)
 
     def quit(self):
         pygame.quit()
@@ -46,27 +38,27 @@ class Main:
         self.window.fill(self.white)
 
     def getCenterBottomPlatformDistance(self):
-        rectCenter = self.bottomRect['x'] + self.bottomRect['width'] / 2
+        rectCenter = self.bottomPlatform.x + self.bottomPlatform.width / 2
         return rectCenter - self.ball.x
 
     def getCenterTopPlatformDistance(self):
-        rectCenter = self.topRect['x'] + self.topRect['width'] / 2
+        rectCenter = self.topPlatform.x + self.topPlatform.width / 2
         return rectCenter - self.ball.x
 
     def getCollidedIntoBottomPlataform(self):
         circlePoints = self.ball.getCoordinatesPoints()
-        rectRight = self.bottomRect['x'] + self.bottomRect['width']
+        rectRight = self.bottomPlatform.x + self.bottomPlatform.width
         for point in circlePoints:
-            if point['x'] >= self.bottomRect['x'] and point['x'] <= rectRight and point['y'] > 480 and point['y'] < 490:
+            if point['x'] >= self.bottomPlatform.x and point['x'] <= rectRight and point['y'] > 480 and point['y'] < 490:
                 return True
 
         return False
 
     def getCollidedIntoTopPlataform(self):
         circlePoints = self.ball.getCoordinatesPoints()
-        rectRight = self.topRect['x'] + self.topRect['width']
+        rectRight = self.topPlatform.x + self.topPlatform.width
         for point in circlePoints:
-            if point['x'] >= self.topRect['x'] and point['x'] <= rectRight and point['y'] <= 20 and point['y'] >= 10:
+            if point['x'] >= self.topPlatform.x and point['x'] <= rectRight and point['y'] <= 20 and point['y'] >= 10:
                 return True
 
         return False
@@ -79,24 +71,20 @@ class Main:
         keys = pygame.key.get_pressed()
 
         if(keys[pygame.K_LEFT]):
-            if self.bottomRect['x'] > 0:
-                self.bottomRect['x'] = self.bottomRect['x'] - 1
+            if self.bottomPlatform.x > 0:
+                self.bottomPlatform.x = self.bottomPlatform.x - 1
             
         if(keys[pygame.K_RIGHT]):
-            if self.bottomRect['x'] +  self.bottomRect['width'] < 350:
-                self.bottomRect['x'] = self.bottomRect['x'] + 1
+            if self.bottomPlatform.x +  self.bottomPlatform.width < 350:
+                self.bottomPlatform.x = self.bottomPlatform.x + 1
         
         if(keys[pygame.K_a]):
-            if self.topRect['x'] > 0:
-                self.topRect['x'] = self.topRect['x'] - 1
+            if self.topPlatform.x > 0:
+                self.topPlatform.x = self.topPlatform.x - 1
             
         if(keys[pygame.K_d]):
-            if self.topRect['x'] +  self.topRect['width'] < 350:
-                self.topRect['x'] = self.topRect['x'] + 1
-        
-        if(keys[pygame.K_d]):
-            if self.topRect['x'] +  self.topRect['width'] < 350:
-                self.topRect['x'] = self.topRect['x'] + 1
+            if self.topPlatform.x +  self.topPlatform.width < 350:
+                self.topPlatform.x = self.topPlatform.x + 1
         
         if(keys[pygame.K_ESCAPE]):
             self.quit()
@@ -104,8 +92,8 @@ class Main:
     def updateWindow(self):
         self.redrawWindow()
         self.ball.redraw()
-        pygame.draw.rect(self.window, self.black, (self.bottomRect['x'], self.bottomRect['y'], self.bottomRect['width'], self.bottomRect['height']))
-        pygame.draw.rect(self.window, self.black, (self.topRect['x'], self.topRect['y'], self.topRect['width'], self.topRect['height']))
+        self.topPlatform.redraw()
+        self.bottomPlatform.redraw()
         self.drawScore()
         pygame.display.update()
 
@@ -167,13 +155,13 @@ class Main:
                 self.ball.speedX = 0
 
                 if centerDistance > 0:
-                    if centerDistance > (self.bottomRect['width'] / 2 / 2 / 2):
+                    if centerDistance > (Platform.width / 2 / 2 / 2):
                         self.ball.speedX = 3
 
-                    if centerDistance > (self.bottomRect['width'] / 2 / 2):
+                    if centerDistance > (Platform.width / 2 / 2):
                         self.ball.speedX = 2
 
-                    if centerDistance > (self.bottomRect['width'] / 2):
+                    if centerDistance > (Platform.width / 2):
                         self.ball.speedX = 1
                 
                 if centerDistance == 0:
