@@ -1,15 +1,16 @@
+
 # Ping Pong
 
 A 2D Ping Pong game, created in python.
-
-### Requeriments
+## Requeriments
+This project has a few some dependencies that you need to install.
 
  1. [Python 3](https://www.python.org/)
  2. [pygame](https://github.com/pygame/pygame)
  3. [screeninfo](https://github.com/rr-/screeninfo)
  
- ### Installation
-
+ ## Installation
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
 1. Install screeninfo lib
 ```
 pip3 install screeninfo
@@ -18,7 +19,7 @@ pip3 install screeninfo
 ```
 pip3 install pygame
 ```
- ### Running the game
+ ## Run the game
 ```
 python3 main.py
 ```
