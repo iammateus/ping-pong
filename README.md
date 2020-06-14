@@ -24,3 +24,5 @@ pip3 install pygame
 ```
 python3 main.py
 ```
+## License
+[MIT](https://github.com/iammateus/ping-pong/blob/master/LICENSE)
