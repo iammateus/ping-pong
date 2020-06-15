@@ -106,16 +106,28 @@ class Main:
 
     def getXDirection(self, platform):
         centerDistance = self.getPlatformCenterDistanceToBall(platform)
+        if centerDistance == 0:
+            return 0
 
         if centerDistance < 0:
             return 1
-        return -1
+            
+        if centerDistance > 0:
+            return -1
 
     def getTopScored(self):
         return self.ball.y - self.ball.radius == 500
 
     def getBottomScored(self):
         return self.ball.y +  self.ball.radius == 0
+
+    def restart(self, y, directionY):
+        self.ball.x = 175
+        self.ball.y = y
+        self.ball.directionX = 0
+        self.ball.directionY = directionY
+        self.updateWindow()
+        pygame.time.wait(500)
 
     def run(self):
         clock = pygame.time.Clock()
@@ -156,9 +168,6 @@ class Main:
                     if centerDistance > (Platform.width / 2):
                         self.ball.speedX = 1
                 
-                if centerDistance == 0:
-                    self.ball.directionX = 0
-            
             if self.ball.x - self.ball.radius == 0:
                 self.ball.directionX = 1
 
@@ -167,24 +176,14 @@ class Main:
 
             if self.getTopScored():
                 self.score['top'] += 1
-                self.ball.y = 500 - 60
-                self.ball.x = 175
-                self.ball.directionX = 0
-                self.ball.directionY = -1
-                self.updateWindow()
-                pygame.time.wait(500)
+                self.restart(420, -1)
 
             if self.getBottomScored():
                 self.score['bottom'] += 1
-                self.ball.y = 60
-                self.ball.x = 175
-                self.ball.directionX = 0
-                self.ball.directionY = 1
-                self.updateWindow()
-                pygame.time.wait(500)
+                self.restart(60, 1)
 
-            # print('direction x: ' + str(direction['x']))
-            # print('speed x: ' + str(speed['x']))
+            # print('direction x: ' + str(self.ball.directionX))
+            # print('speed x: ' + str(self.ball.speedX))
 
 main = Main()
 main.run()
