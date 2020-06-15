@@ -2,22 +2,16 @@ import pygame
 import tkinter as tk
 from ball import Ball
 from platform import Platform
-from random import randrange
+from score import Score
 from tkinter import messagebox
 from Utils.windowconfig import setWindowPositionCentered
 
 class Main:
     width = 350
     height = 500
-
     black = (0,0,0)
     white = (255, 255, 255)
     
-    score = {
-        'top': 0,
-        'bottom': 0
-    }
-
     def __init__(self):
         setWindowPositionCentered(self.width, self.height)
         self.window = pygame.display.set_mode((self.width, self.height))
@@ -29,6 +23,7 @@ class Main:
         platformsX = (350 - 60) // 2
         self.topPlatform = Platform(self.window, platformsX, 0)
         self.bottomPlatform = Platform(self.window, platformsX, 480)
+        self.score = Score(self.window)
 
     def quit(self):
         pygame.quit()
@@ -90,14 +85,8 @@ class Main:
         self.ball.redraw()
         self.topPlatform.redraw()
         self.bottomPlatform.redraw()
-        self.drawScore()
+        self.score.redraw()
         pygame.display.update()
-
-    def drawScore(self):
-        scoreFont = pygame.font.SysFont("monospace", 16, 400)
-        scoreText = "Top: " +  str(self.score["top"]) + " x Bottom: " + str(self.score["bottom"])
-        scoreLabel =   scoreFont.render(scoreText, 1, self.black)
-        self.window.blit(scoreLabel, (10, 40))
 
     def getYDirection(self):
         if self.ball.y > 250:
@@ -175,11 +164,11 @@ class Main:
                 self.ball.directionX = -1
 
             if self.getTopScored():
-                self.score['top'] += 1
+                self.score.addTop()
                 self.restart(420, -1)
 
             if self.getBottomScored():
-                self.score['bottom'] += 1
+                self.score.addBottom()
                 self.restart(60, 1)
 
             # print('direction x: ' + str(self.ball.directionX))
