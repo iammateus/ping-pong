@@ -1,10 +1,10 @@
 import pygame
 import math
+from Utils.colors import Colors
 
 class Ball:
     radius = 15
     size = 30
-    color = (0,0,0)
 
     def __init__(self, window):
         self.x = 175
@@ -26,7 +26,7 @@ class Ball:
         self.moveCounter += 1   
 
     def redraw(self):
-        pygame.draw.circle(self.window, self.color, (self.x, self.y), self.radius, self.radius)
+        pygame.draw.circle(self.window, Colors.black, (self.x, self.y), self.radius, self.radius)
 
     def getCoordinatesPoints(self):
         points = []

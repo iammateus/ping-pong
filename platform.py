@@ -1,9 +1,9 @@
 import pygame
+from Utils.colors import Colors
 
 class Platform:
     width = 60
     height = 20
-    color = (0,0,0)
 
     def __init__(self, window, x, y):
         self.window = window
@@ -11,7 +11,7 @@ class Platform:
         self.y = y
 
     def redraw(self):
-        pygame.draw.rect(self.window, self.color, (self.x, self.y, self.width, self.height))
+        pygame.draw.rect(self.window, Colors.black, (self.x, self.y, self.width, self.height))
     
     def goLeft(self):
         self.x -= 1
