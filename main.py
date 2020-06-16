@@ -4,13 +4,12 @@ from ball import Ball
 from platform import Platform
 from score import Score
 from tkinter import messagebox
+from Utils.colors import Colors
 from Utils.windowconfig import setWindowPositionCentered
 
 class Main:
     width = 350
     height = 500
-    black = (0,0,0)
-    white = (255, 255, 255)
     
     def __init__(self):
         setWindowPositionCentered(self.width, self.height)
@@ -30,7 +29,7 @@ class Main:
         exit()
 
     def redrawWindow(self):
-        self.window.fill(self.white)
+        self.window.fill(Colors.white)
 
     def getPlatformCenterDistanceToBall(self, platform):
         platformCenter = platform.x + platform.width / 2
