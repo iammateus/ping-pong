@@ -11,7 +11,7 @@ This project has a few dependencies that you need to install.
  3. [screeninfo](https://github.com/rr-/screeninfo)
  
 ## Installation
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the dependencies.
 1. Install screeninfo lib
 ```
 pip3 install screeninfo
