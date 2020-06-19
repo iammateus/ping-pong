@@ -4,7 +4,7 @@ A 2D Ping Pong game, created in python.
 ![Game demo](https://raw.githubusercontent.com/iammateus/ping-pong/assets/demo.gif)
 
 ## Requeriments
-This project has a few some dependencies that you need to install.
+This project has a few dependencies that you need to install.
 
  1. [Python 3](https://www.python.org/)
  2. [pygame](https://github.com/pygame/pygame)
