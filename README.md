@@ -1,6 +1,6 @@
 # Ping Pong
 
-A 2D Ping Pong game, created in python.  
+A 2D Ping Pong game, created with python.  
 ![Game demo](https://raw.githubusercontent.com/iammateus/ping-pong/assets/demo.gif)
 
 ## Requeriments
